@@ -1,44 +1,46 @@
-# AuthBoard - Mini PHP Auth Project
+# Facebook Like Social Platform 
 
-PHP version: 8.0+ (tested with PHP 8)
-A small teaching project demonstrating:
-- Registration & Login
-- Sessions
-- Simple Router
-- Namespaces & PSR-4 autoloading (composer)
-- Password hashing (password_hash)
-- Email sending (Mailtrap + PHPMailer)
-- Basic folder structure and simple styling
+PHP version: 8.0+ (tested with PHP 8.1+)
+A complete social media platform demonstrating modern PHP development with:
 
-## Requirements
-- PHP 8.0+
-- Composer (for dependencies)
-- MySQL (or MariaDB)
-- Local webserver (XAMPP, Laragon, etc.)
+* User Registration & Authentication
+* Facebook-style Post Creation with Images
+* Modern UI with Tailwind CSS
+* Profile Management with Avatar Uploads
+* Session Management
+* MVC Architecture with Custom Router
+* Namespaces & PSR-4 autoloading (composer)
+* Secure Password Hashing
+* File Upload Handling
+* Database Relationships
 
-## Setup
-1. Unzip the project into your web root (or point your vhost to `AuthBoard/public`).
-2. Copy `.env.example` to `.env` and fill values (DB and Mailtrap credentials).
-3. Create the database and import `sql/schema.sql`.
-   Example:
-   ```sql
-   CREATE DATABASE authboard;
-   USE authboard;
-   -- then import the schema.sql file
-   ```
-4. Install composer dependencies:
-   ```bash
-   composer install
-   ```
-5. Start the server (if using built-in PHP server for testing):
-   ```bash
-   cd public
-   php -S localhost:8000
-   ```
-6. Visit `http://localhost:8000` (or your configured vhost).
+---
 
-## Notes for instructors
-- Students should update `.env` with their Mailtrap sandbox credentials.
-- The project uses a tiny .env loader (no external dotenv package required).
-- Encourage students to read files under `app/` to understand flow.
+## 🚀 Features
+
+*  **User Authentication** — Secure login/registration system.
+*  **Social Posts** —  Create, view, and delete posts with optional images.
+*  **Modern UI** — Beautiful, responsive design with Tailwind CSS.
+*  **Profile Management** — Update profile information and upload avatars.
+*  **Image Uploads** — Support for post images and profile pictures.
+*  **Real-time Interactions** — Like, comment, and share functionality (UI ready).
+*  **Session Security** — Protected routes and secure session handling.
+
+---
+## 📋 Requirements
+* PHP 8.0+
+* Composer (for dependencies)
+* MySQL 5.7+ (or MariaDB 10.2+)
+* Local webserver (XAMPP, Laragon, WAMP, or built-in PHP server)
+* Modern browser with JavaScript enabled
+
+---
+
+## 📸 Screenshots
+
+| Registration Page                            | User List                            | Edit Modal                            |
+| -------------------------------------------- | ------------------------------------ | ------------------------------------- |
+| ![Registration Page](assets/registration_page.png) | ![User List](assets/user_page.png) | ![Edit Modal](assets/edit_modal.png) |
+
+---
 
