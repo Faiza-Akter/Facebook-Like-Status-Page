@@ -38,9 +38,19 @@ A complete social media platform demonstrating modern PHP development with:
 
 ## 📸 Screenshots
 
-| Sign Up Page               | User List                            | Edit Modal                            |
-| ---------------------------| ------------------------------------ | ------------------------------------- |
-| ![Sign Up Page](public/assets/SignUp.png) | ![User List](assets/user_page.png) | ![Edit Modal](assets/edit_modal.png) |
+| Sign Up Page                              | Sign In Page                              | Dashboard 1                                  |
+| ------------------------------------------| ------------------------------------------| -------------------------------------------- |
+| ![Sign Up Page](public/assets/SignUp.png) | ![Sign In Page](public/assets/SignIn.png) | ![Dashboard 1](public/assets/Dashboard1.png) |
+
+| Dashboard 2                                  | Create Posts                                   | Posts                             |
+| ---------------------------------------------| -----------------------------------------------| ----------------------------------|
+| ![Dashboard 2](public/assets/Dashboard2.png) | ![Create Posts](public/assets/CreatePosts.png) | ![Posts](public/assets/Posts.png) |
+
+| Profile Setting                                      | 
+|------------------------------------------------------|
+| ![Profile Setting](public/assets/ProfileSetting.png) | 
+
+
 
 ---
 
