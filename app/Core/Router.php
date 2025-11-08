@@ -4,12 +4,16 @@ namespace App\Core;
 class Router {
     private array $routes = [];
 
-    public function get(string $path, callable $callback): void {
+    public function get(string $path, $callback): void {
         $this->routes['GET'][$path] = $callback;
     }
 
-    public function post(string $path, callable $callback): void {
+    public function post(string $path, $callback): void {
         $this->routes['POST'][$path] = $callback;
+    }
+
+    public function delete(string $path, $callback): void {
+        $this->routes['DELETE'][$path] = $callback;
     }
 
     public function dispatch(string $uri, string $method): void {
@@ -22,8 +26,16 @@ class Router {
             return;
         }
 
-        echo call_user_func($callback);
+        // Handle controller method callbacks
+        if (is_array($callback)) {
+            $controller = new $callback[0]();
+            $method = $callback[1];
+            echo call_user_func([$controller, $method]);
+        } else {
+            echo call_user_func($callback);
+        }
     }
+    
     public function redirect(string $path)
     {
         header("Location: $path");

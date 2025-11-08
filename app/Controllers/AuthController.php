@@ -8,7 +8,6 @@ use App\Models\User;
 
 class AuthController extends Controller {
     public function showLogin() {
-      
         $this->view('auth/login.php');
     }
 
@@ -45,7 +44,12 @@ class AuthController extends Controller {
 
         $user = User::findByEmail($email);
         if ($user && password_verify($password, $user['password'])) {
-            Session::set('user', ['id' => $user['id'], 'name' => $user['name'], 'email' => $user['email']]);
+            Session::set('user', [
+                'id' => $user['id'], 
+                'name' => $user['name'], 
+                'email' => $user['email'],
+                'profile_picture' => $user['profile_picture'] ?? null
+            ]);
             header('Location: /dashboard');
             return;
         }
