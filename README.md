@@ -38,9 +38,9 @@ A complete social media platform demonstrating modern PHP development with:
 
 ## 📸 Screenshots
 
-| Registration Page                            | User List                            | Edit Modal                            |
-| -------------------------------------------- | ------------------------------------ | ------------------------------------- |
-| ![Registration Page](assets/registration_page.png) | ![User List](assets/user_page.png) | ![Edit Modal](assets/edit_modal.png) |
+| Sign Up Page               | User List                            | Edit Modal                            |
+| ---------------------------| ------------------------------------ | ------------------------------------- |
+| (public/assets/SignUp.png) | ![User List](assets/user_page.png) | ![Edit Modal](assets/edit_modal.png) |
 
 ---
 
