@@ -42,7 +42,7 @@ class PostController extends Controller {
         
         $posts = $this->postModel->getAllWithUsers();
         
-        // Enhance posts with user profile pictures
+        // Enhance posts with user profile pictures, like counts, comment counts, and like status
         $enhancedPosts = [];
         foreach ($posts as $post) {
             $postUser = User::findById($post['user_id']);
@@ -53,10 +53,66 @@ class PostController extends Controller {
                 $post['image'] = $this->getPostImageUrl($post['image']);
             }
             
+            // Add like and comment data
+            $post['like_count'] = $this->postModel->getLikeCount($post['id']);
+            $post['comment_count'] = $this->postModel->getCommentCount($post['id']);
+            $post['is_liked'] = $this->postModel->isLikedByUser($user['id'], $post['id']);
+            $post['comments'] = $this->postModel->getComments($post['id']);
+            
+            // Enhance comment user profile pictures
+            foreach ($post['comments'] as &$comment) {
+                if (!empty($comment['user_profile_picture'])) {
+                    $comment['user_profile_picture'] = $this->getProfileImageUrl($comment['user_profile_picture']);
+                }
+            }
+            
             $enhancedPosts[] = $post;
         }
         
         $this->view('posts/index.php', [
+            'user' => $user, 
+            'posts' => $enhancedPosts
+        ]);
+    }
+
+    // New method for personalized feed
+    public function feed() {
+        $user = Session::get('user');
+        if (!$user) {
+            header('Location: /login');
+            exit;
+        }
+        
+        $posts = $this->postModel->getFeedPosts($user['id']);
+        
+        // Enhance posts with user profile pictures, like counts, comment counts, and like status
+        $enhancedPosts = [];
+        foreach ($posts as $post) {
+            $postUser = User::findById($post['user_id']);
+            $post['user_profile_picture'] = $postUser['profile_picture'] ?? null;
+            
+            // Fix post image URL if exists
+            if (!empty($post['image'])) {
+                $post['image'] = $this->getPostImageUrl($post['image']);
+            }
+            
+            // Add like and comment data
+            $post['like_count'] = $this->postModel->getLikeCount($post['id']);
+            $post['comment_count'] = $this->postModel->getCommentCount($post['id']);
+            $post['is_liked'] = $this->postModel->isLikedByUser($user['id'], $post['id']);
+            $post['comments'] = $this->postModel->getComments($post['id']);
+            
+            // Enhance comment user profile pictures
+            foreach ($post['comments'] as &$comment) {
+                if (!empty($comment['user_profile_picture'])) {
+                    $comment['user_profile_picture'] = $this->getProfileImageUrl($comment['user_profile_picture']);
+                }
+            }
+            
+            $enhancedPosts[] = $post;
+        }
+        
+        $this->view('posts/feed.php', [
             'user' => $user, 
             'posts' => $enhancedPosts
         ]);
@@ -135,5 +191,111 @@ class PostController extends Controller {
 
         header('Location: /posts');
         exit;
+    }
+
+    public function like() {
+        $user = Session::get('user');
+        if (!$user) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Not authenticated']);
+            return;
+        }
+
+        $postId = $_POST['post_id'] ?? null;
+        
+        if ($postId) {
+            $success = $this->postModel->likePost($user['id'], $postId);
+            if ($success) {
+                $likeCount = $this->postModel->getLikeCount($postId);
+                $isLiked = $this->postModel->isLikedByUser($user['id'], $postId);
+                echo json_encode([
+                    'success' => true, 
+                    'like_count' => $likeCount,
+                    'is_liked' => $isLiked
+                ]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to like post']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid post ID']);
+        }
+    }
+
+    public function comment() {
+        $user = Session::get('user');
+        if (!$user) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Not authenticated']);
+            return;
+        }
+
+        $postId = $_POST['post_id'] ?? null;
+        $content = trim($_POST['content'] ?? '');
+        
+        if ($postId && !empty($content)) {
+            $success = $this->postModel->addComment($user['id'], $postId, $content);
+            if ($success) {
+                // Get the newly added comment with user info
+                $comments = $this->postModel->getComments($postId);
+                $newComment = end($comments);
+                
+                // Enhance profile picture URL
+                if (!empty($newComment['user_profile_picture'])) {
+                    $newComment['user_profile_picture'] = $this->getProfileImageUrl($newComment['user_profile_picture']);
+                }
+                
+                $commentCount = $this->postModel->getCommentCount($postId);
+                echo json_encode([
+                    'success' => true, 
+                    'comment' => $newComment,
+                    'comment_count' => $commentCount
+                ]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to add comment']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid post ID or empty content']);
+        }
+    }
+
+    public function deleteComment() {
+        $user = Session::get('user');
+        if (!$user) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Not authenticated']);
+            return;
+        }
+
+        $commentId = $_POST['comment_id'] ?? null;
+        
+        if ($commentId) {
+            $success = $this->postModel->deleteComment($commentId, $user['id']);
+            if ($success) {
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to delete comment']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid comment ID']);
+        }
+    }
+
+    private function getProfileImageUrl($path) {
+        if (empty($path)) {
+            return null;
+        }
+
+        // If the path already starts with /assets/, return as is
+        if (strpos($path, '/assets/') === 0) {
+            return $path;
+        }
+
+        // If it's just a filename or relative path, prepend /assets/uploads/profiles/
+        if (strpos($path, '/') === false) {
+            return '/assets/uploads/profiles/' . $path;
+        }
+
+        // Ensure it starts with a slash
+        return '/' . ltrim($path, '/');
     }
 }

@@ -20,21 +20,23 @@ ob_start();
         <p class="text-xl text-slate-700 font-light">Here's what's happening with your account today</p>
     </div>
 
-    <!-- Stats Grid -->
+        <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
         <!-- Profile Complete Card -->
         <div class="group relative">
             <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
-            <div class="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/60 p-8 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            <div class="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/60 p-8 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full flex flex-col">
                 <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold text-slate-800 mb-3">Profile Complete</h3>
-                <p class="text-slate-600 font-light">Your account is active and ready</p>
-                <div class="mt-4 w-full bg-slate-200 rounded-full h-2">
-                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full w-full"></div>
+                <p class="text-slate-600 font-light mb-4">Your account is active and ready</p>
+                <div class="mt-auto">
+                    <div class="w-full bg-slate-200 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full w-full"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,17 +44,19 @@ ob_start();
         <!-- Community Posts Card -->
         <div class="group relative">
             <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-blue-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
-            <div class="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/60 p-8 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            <div class="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/60 p-8 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full flex flex-col">
                 <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold text-slate-800 mb-3">Community Posts</h3>
-                <p class="text-slate-600 font-light">Share your thoughts with community</p>
-                <div class="mt-4 flex justify-center items-center space-x-1">
-                    <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                    <span class="text-sm text-slate-500 font-medium">Live updates</span>
+                <p class="text-slate-600 font-light mb-4">Share your thoughts with community</p>
+                <div class="mt-auto">
+                    <div class="flex justify-center items-center space-x-1">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                        <span class="text-sm text-slate-500 font-medium">Live updates</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,15 +64,15 @@ ob_start();
         <!-- Activity Card -->
         <div class="group relative">
             <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
-            <div class="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/60 p-8 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            <div class="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/60 p-8 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full flex flex-col">
                 <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold text-slate-800 mb-3">Activity</h3>
-                <p class="text-slate-600 font-light">Stay connected with others</p>
-                <div class="mt-4">
+                <p class="text-slate-600 font-light mb-4">Stay connected with others</p>
+                <div class="mt-auto">
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                         Active now
                     </span>
@@ -76,7 +80,6 @@ ob_start();
             </div>
         </div>
     </div>
-
     <!-- Main Content Grid - Equal Height Cards -->
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
         <!-- Profile Information -->

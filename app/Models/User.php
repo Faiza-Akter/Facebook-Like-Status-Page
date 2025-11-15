@@ -99,4 +99,117 @@ class User
             return false;
         }
     }
+
+    // New methods for follow system
+    public static function getPublicProfile(int $userId): ?array
+    {
+        $stmt = self::connect()->prepare('
+            SELECT id, name, profile_picture, created_at,
+            (SELECT COUNT(*) FROM followers WHERE following_id = ?) as follower_count,
+            (SELECT COUNT(*) FROM followers WHERE follower_id = ?) as following_count,
+            (SELECT COUNT(*) FROM posts WHERE user_id = ?) as post_count
+            FROM users WHERE id = ?
+        ');
+        $stmt->execute([$userId, $userId, $userId, $userId]);
+        $row = $stmt->fetch();
+
+        if ($row && !empty($row['profile_picture'])) {
+            $row['profile_picture'] = self::getImageUrl($row['profile_picture']);
+        }
+
+        return $row ?: null;
+    }
+
+    public static function isFollowing(int $followerId, int $followingId): bool
+    {
+        $stmt = self::connect()->prepare('SELECT id FROM followers WHERE follower_id = ? AND following_id = ?');
+        $stmt->execute([$followerId, $followingId]);
+        return (bool) $stmt->fetch();
+    }
+
+    public static function follow(int $followerId, int $followingId): bool
+    {
+        // Don't allow following yourself
+        if ($followerId === $followingId) {
+            return false;
+        }
+
+        // Check if already following
+        if (self::isFollowing($followerId, $followingId)) {
+            return true;
+        }
+
+        $stmt = self::connect()->prepare('INSERT INTO followers (follower_id, following_id) VALUES (?, ?)');
+        return $stmt->execute([$followerId, $followingId]);
+    }
+
+    public static function unfollow(int $followerId, int $followingId): bool
+    {
+        $stmt = self::connect()->prepare('DELETE FROM followers WHERE follower_id = ? AND following_id = ?');
+        return $stmt->execute([$followerId, $followingId]);
+    }
+
+    public static function getFollowers(int $userId): array
+    {
+        $stmt = self::connect()->prepare('
+            SELECT u.id, u.name, u.profile_picture, u.created_at
+            FROM followers f
+            JOIN users u ON f.follower_id = u.id
+            WHERE f.following_id = ?
+            ORDER BY f.created_at DESC
+        ');
+        $stmt->execute([$userId]);
+        $rows = $stmt->fetchAll();
+
+        foreach ($rows as &$row) {
+            if (!empty($row['profile_picture'])) {
+                $row['profile_picture'] = self::getImageUrl($row['profile_picture']);
+            }
+        }
+
+        return $rows;
+    }
+
+    public static function getFollowing(int $userId): array
+    {
+        $stmt = self::connect()->prepare('
+            SELECT u.id, u.name, u.profile_picture, u.created_at
+            FROM followers f
+            JOIN users u ON f.following_id = u.id
+            WHERE f.follower_id = ?
+            ORDER BY f.created_at DESC
+        ');
+        $stmt->execute([$userId]);
+        $rows = $stmt->fetchAll();
+
+        foreach ($rows as &$row) {
+            if (!empty($row['profile_picture'])) {
+                $row['profile_picture'] = self::getImageUrl($row['profile_picture']);
+            }
+        }
+
+        return $rows;
+    }
+
+    public static function searchUsers(string $query): array
+    {
+        $stmt = self::connect()->prepare('
+            SELECT id, name, profile_picture, created_at
+            FROM users 
+            WHERE name LIKE ? OR email LIKE ?
+            ORDER BY name
+            LIMIT 20
+        ');
+        $searchTerm = '%' . $query . '%';
+        $stmt->execute([$searchTerm, $searchTerm]);
+        $rows = $stmt->fetchAll();
+
+        foreach ($rows as &$row) {
+            if (!empty($row['profile_picture'])) {
+                $row['profile_picture'] = self::getImageUrl($row['profile_picture']);
+            }
+        }
+
+        return $rows;
+    }
 }

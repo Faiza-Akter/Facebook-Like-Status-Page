@@ -1,21 +1,30 @@
 <?php
-$title = 'Posts | AuthBoard';
+$title = 'Your Feed | AuthBoard';
 ob_start();
 ?>
 <div class="max-w-4xl mx-auto">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12">
         <div class="text-center sm:text-left">
-            <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-700 bg-clip-text text-transparent mb-4">Community Posts</h1>
-            <p class="text-slate-700 text-base font-light">Discover what others are sharing in our community</p>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-700 bg-clip-text text-transparent mb-4">Your Feed</h1>
+            <p class="text-slate-700 text-base font-light">Posts from people you follow</p>
         </div>
-        <a href="/posts/create" 
-           class="bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white px-8 py-4 rounded-2xl transition-all duration-300 font-semibold flex items-center shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border border-white/20">
-            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
-            Create Post
-        </a>
+        <div class="flex space-x-4">
+            <a href="/search/users" 
+               class="bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white px-6 py-3 rounded-2xl transition-all duration-300 font-semibold flex items-center shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border border-white/20">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                Find Users
+            </a>
+            <a href="/posts/create" 
+               class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-2xl transition-all duration-300 font-semibold flex items-center shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border border-white/20">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Create Post
+            </a>
+        </div>
     </div>
 
     <!-- Posts Feed -->
@@ -30,11 +39,16 @@ ob_start();
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-3xl font-bold text-slate-800 mb-4">No posts yet</h3>
-                    <p class="text-slate-600 text-lg mb-8 max-w-md mx-auto font-light">Be the first to share something amazing with the community!</p>
-                    <a href="/posts/create" class="bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white px-8 py-4 rounded-2xl transition-all duration-300 inline-block font-semibold shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border border-white/20">
-                        Create First Post
-                    </a>
+                    <h3 class="text-3xl font-bold text-slate-800 mb-4">Your feed is empty</h3>
+                    <p class="text-slate-600 text-lg mb-8 max-w-md mx-auto font-light">Start following people to see their posts here, or explore all posts.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="/search/users" class="bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white px-8 py-4 rounded-2xl transition-all duration-300 inline-block font-semibold shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border border-white/20">
+                            Find Users to Follow
+                        </a>
+                        <a href="/posts" class="bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white px-8 py-4 rounded-2xl transition-all duration-300 inline-block font-semibold shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border border-white/20">
+                            View All Posts
+                        </a>
+                    </div>
                 </div>
             </div>
         <?php else: ?>
@@ -46,28 +60,28 @@ ob_start();
                         <!-- Post Header -->
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center space-x-4">
-                                <div class="relative">
+                                <a href="/profile/<?= $post['user_id'] ?>" class="flex items-center space-x-4 group/profile">
                                     <?php if ($post['user_profile_picture']): ?>
-                                        <div class="w-14 h-14 rounded-full border-2 border-white shadow-lg overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 p-0.5 group/profile">
+                                        <div class="w-14 h-14 rounded-full border-2 border-white shadow-lg overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 p-0.5">
                                             <img src="<?= htmlspecialchars($post['user_profile_picture']) ?>" 
                                                  alt="Profile" 
                                                  class="w-full h-full rounded-full object-cover group-hover/profile:scale-110 transition-transform duration-300">
                                         </div>
                                     <?php else: ?>
-                                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-base border-2 border-white shadow-lg group-hover:scale-105 transition-transform duration-300">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-base border-2 border-white shadow-lg group-hover/profile:scale-105 transition-transform duration-300">
                                             <?= strtoupper(substr($post['user_name'], 0, 1)) ?>
                                         </div>
                                     <?php endif; ?>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-slate-800 text-lg"><?= htmlspecialchars($post['user_name']) ?></h3>
-                                    <p class="text-slate-600 text-sm flex items-center mt-1 font-light">
-                                        <svg class="w-4 h-4 mr-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <?= date('M j, Y g:i A', strtotime($post['created_at'])) ?>
-                                    </p>
-                                </div>
+                                    <div>
+                                        <h3 class="font-bold text-slate-800 text-lg group-hover/profile:text-blue-600 transition-colors duration-200"><?= htmlspecialchars($post['user_name']) ?></h3>
+                                        <p class="text-slate-600 text-sm flex items-center mt-1 font-light">
+                                            <svg class="w-4 h-4 mr-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <?= date('M j, Y g:i A', strtotime($post['created_at'])) ?>
+                                        </p>
+                                    </div>
+                                </a>
                             </div>
                             
                             <!-- Delete Button (only show for post owner) -->
@@ -111,20 +125,22 @@ ob_start();
                                 <div class="space-y-3 max-h-60 overflow-y-auto">
                                     <?php foreach ($post['comments'] as $comment): ?>
                                         <div class="flex items-start space-x-3 group/comment">
-                                            <?php if ($comment['user_profile_picture']): ?>
-                                                <div class="w-8 h-8 rounded-full overflow-hidden border border-slate-200 flex-shrink-0">
-                                                    <img src="<?= htmlspecialchars($comment['user_profile_picture']) ?>" 
-                                                         alt="Profile" 
-                                                         class="w-full h-full object-cover">
-                                                </div>
-                                            <?php else: ?>
-                                                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xs border border-slate-200 flex-shrink-0">
-                                                    <?= strtoupper(substr($comment['user_name'], 0, 1)) ?>
-                                                </div>
-                                            <?php endif; ?>
+                                            <a href="/profile/<?= $comment['user_id'] ?>" class="flex-shrink-0">
+                                                <?php if ($comment['user_profile_picture']): ?>
+                                                    <div class="w-8 h-8 rounded-full overflow-hidden border border-slate-200">
+                                                        <img src="<?= htmlspecialchars($comment['user_profile_picture']) ?>" 
+                                                             alt="Profile" 
+                                                             class="w-full h-full object-cover">
+                                                    </div>
+                                                <?php else: ?>
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xs border border-slate-200">
+                                                        <?= strtoupper(substr($comment['user_name'], 0, 1)) ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </a>
                                             <div class="flex-1 bg-white rounded-2xl p-3 shadow-sm border border-slate-200/50">
                                                 <div class="flex justify-between items-start mb-1">
-                                                    <span class="font-semibold text-slate-800 text-sm"><?= htmlspecialchars($comment['user_name']) ?></span>
+                                                    <a href="/profile/<?= $comment['user_id'] ?>" class="font-semibold text-slate-800 text-sm hover:text-blue-600 transition-colors duration-200"><?= htmlspecialchars($comment['user_name']) ?></a>
                                                     <span class="text-xs text-slate-500"><?= date('M j, g:i A', strtotime($comment['created_at'])) ?></span>
                                                 </div>
                                                 <p class="text-slate-700 text-sm"><?= htmlspecialchars($comment['content']) ?></p>

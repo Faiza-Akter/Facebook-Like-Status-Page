@@ -23,6 +23,7 @@ use App\Core\Session;
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\PostController;
+use App\Controllers\ProfileController;
 
 Session::start();
 
@@ -30,27 +31,44 @@ $router = new Router();
 $auth = new AuthController();
 $dash = new DashboardController();
 $post = new PostController();
-use App\Controllers\ProfileController; 
+$profile = new ProfileController();
 
-// Profile routes
-$router->get('/profile', [ProfileController::class, 'showProfile']);
-$router->post('/profile/update', [ProfileController::class, 'updateProfile']);
-$router->post('/profile/picture', [ProfileController::class, 'updateProfilePicture']);
-
-// Post delete route
-$router->post('/posts/delete', [PostController::class, 'delete']);
-
+// Auth routes
 $router->get('/', fn() => $auth->showLogin());
 $router->get('/login', fn() => $auth->showLogin());
 $router->get('/register', fn() => $auth->showRegister());
-$router->get('/dashboard', fn() => $dash->index());
-$router->get('/posts', fn() => $post->index());
-$router->get('/posts/create', fn() => $post->create());
-
 $router->post('/register', fn() => $auth->register());
 $router->post('/login', fn() => $auth->login());
-$router->post('/posts/store', fn() => $post->store());
-
 $router->get('/logout', fn() => $auth->logout());
+
+// Dashboard
+$router->get('/dashboard', fn() => $dash->index());
+
+// Posts routes
+$router->get('/posts', fn() => $post->index());
+$router->get('/posts/feed', fn() => $post->feed());
+$router->get('/posts/create', fn() => $post->create());
+$router->post('/posts/store', fn() => $post->store());
+$router->post('/posts/delete', fn() => $post->delete());
+$router->post('/posts/like', fn() => $post->like());
+$router->post('/posts/comment', fn() => $post->comment());
+$router->post('/posts/delete-comment', fn() => $post->deleteComment());
+
+// Profile routes
+$router->get('/profile', fn() => $profile->showProfile());
+$router->post('/profile/update', fn() => $profile->updateProfile());
+$router->post('/profile/picture', fn() => $profile->updateProfilePicture());
+
+// Public profile routes
+$router->get('/profile/{id}', [ProfileController::class, 'showPublicProfile']);
+$router->get('/profile/{id}/followers', [ProfileController::class, 'showFollowers']);
+$router->get('/profile/{id}/following', [ProfileController::class, 'showFollowing']);
+
+// Follow/unfollow routes
+$router->post('/profile/follow', fn() => $profile->follow());
+$router->post('/profile/unfollow', fn() => $profile->unfollow());
+
+// User search
+$router->get('/search/users', fn() => $profile->searchUsers());
 
 $router->dispatch($_SERVER['REQUEST_URI'] ?? '/', $_SERVER['REQUEST_METHOD'] ?? 'GET');

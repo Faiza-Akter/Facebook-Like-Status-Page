@@ -88,7 +88,21 @@
                             </a>
                         </div>
                     </div>
-
+                    <!-- Add these to the existing navigation links -->
+                    <a href="/posts/feed"
+                        class="relative text-white/90 hover:text-white transition-all duration-300 font-semibold py-2 group/nav">
+                        <span class="relative z-10">Your Feed</span>
+                        <div
+                            class="absolute bottom-0 left-0 w-0 h-1 bg-white group-hover/nav:w-full transition-all duration-300 rounded-full">
+                        </div>
+                    </a>
+                    <a href="/search/users"
+                        class="relative text-white/90 hover:text-white transition-all duration-300 font-semibold py-2 group/nav">
+                        <span class="relative z-10">Find Users</span>
+                        <div
+                            class="absolute bottom-0 left-0 w-0 h-1 bg-white group-hover/nav:w-full transition-all duration-300 rounded-full">
+                        </div>
+                    </a>
                     <!-- User Menu -->
                     <div class="flex items-center space-x-6">
                         <!-- User Info -->
@@ -107,7 +121,8 @@
                             <?php endif; ?>
                             <div class="hidden md:block text-right">
                                 <p class="text-sm font-semibold text-white">
-                                    <?= htmlspecialchars($_SESSION['user']['name'] ?? 'User') ?></p>
+                                    <?= htmlspecialchars($_SESSION['user']['name'] ?? 'User') ?>
+                                </p>
                                 <p class="text-xs text-white/80 font-light">Online</p>
                             </div>
                         </div>
